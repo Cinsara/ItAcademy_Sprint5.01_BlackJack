@@ -1,7 +1,12 @@
 package cat.itacademy.s05.t01.model.persons;
 
+import cat.itacademy.s05.t01.model.cards.Card;
+import cat.itacademy.s05.t01.model.cards.Hand;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @MappedSuperclass
 public abstract class Person {
@@ -9,6 +14,7 @@ public abstract class Person {
     private String id;
     private String name;
     private String email;
+    private Hand hand;
 
     public Person(){
     }
@@ -31,6 +37,10 @@ public abstract class Person {
         return email;
     }
 
+    public Hand getHand() {
+        return hand;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -42,4 +52,10 @@ public abstract class Person {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
 }
+
+

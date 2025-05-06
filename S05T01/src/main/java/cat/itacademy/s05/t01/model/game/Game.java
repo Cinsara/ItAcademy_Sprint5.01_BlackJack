@@ -16,18 +16,18 @@ public class Game {
     private String playerId;
     private String dealerId;
     private GameStatus status;
-    private List<Player> playerList;
     private List<Card> deck;
+    private String winner;
 
     public Game() {}
 
-    public Game(String id, String playerId, String dealerId, GameStatus status, List<Player> playerList, List<Card> deck) {
+    public Game(String id, String playerId, String dealerId, GameStatus status, List<Card> deck, String winner) {
         this.id = id;
         this.playerId = playerId;
         this.dealerId = dealerId;
         this.status = status;
-        this.playerList = playerList;
         this.deck = deck;
+        this.winner = winner;
     }
 
     public String getId() {
@@ -46,23 +46,35 @@ public class Game {
         return status;
     }
 
-    public List<Player> getPlayerList() {
-        return playerList;
-    }
-
     public List<Card> getDeck() {
         return deck;
+    }
+
+    public String getWinner() {
+        return winner;
     }
 
     public void setStatus(GameStatus status) {
         this.status = status;
     }
 
-    public void setPlayerList(List<Player> playerList) {
-        this.playerList = playerList;
-    }
-
     public void setDeck(List<Card> deck) {
         this.deck = deck;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
     }
 }

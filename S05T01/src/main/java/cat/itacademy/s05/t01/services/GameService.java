@@ -1,59 +1,62 @@
 package cat.itacademy.s05.t01.services;
 
+import cat.itacademy.s05.t01.dto.PlayRequest;
 import cat.itacademy.s05.t01.model.cards.Card;
-import cat.itacademy.s05.t01.model.cards.Ranks;
-import cat.itacademy.s05.t01.model.cards.Suits;
+import cat.itacademy.s05.t01.model.cards.Hand;
 import cat.itacademy.s05.t01.model.game.Game;
+import cat.itacademy.s05.t01.model.persons.Dealer;
 import cat.itacademy.s05.t01.model.persons.Player;
 import cat.itacademy.s05.t01.repository.GameRepository;
 import cat.itacademy.s05.t01.repository.PlayerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class GameService {
-    private final GameRepository gameRepository;
-    private final PlayerRepository playerRepository;
+    @Autowired
+    GameRepository gameRepository;
+    PlayerRepository playerRepository;
+    PlayRequest playRequest;
+    MoveHandler moveHandler;
 
-    public GameService(GameRepository gameRepository, PlayerRepository playerRepository) {
-        this.gameRepository = gameRepository;
-        this.playerRepository = playerRepository;
-    }
+    public Mono<Game> newGame(Game game){
+        List<Card> deck = moveHandler.shuffleDeck();
 
-    public Mono<Game> createNewGame(String playerName) {
-        Player player = new Player(UUID.randomUUID().toString(), playerName, "", 0, true);
-        playerRepository.save(player);
+        Player player = new Player();
+        Dealer dealer = new Dealer();
 
-        Game game = new Game();
-        game.setPlayerId(player.getId());
-        game.setDeck(createShuffledDeck());
-        game.setStatus(GameStatus.IN_PROGRESS);
-        game.setCreatedAt(Instant.now());
+        List<Card> playerCards = List.of(deck.removeFirst(), deck.removeFirst());
+        List<Card> dealerCards = List.of(deck.removeFirst(), deck.removeFirst());
+
+        player.setHand(new Hand(playerCards));
+        dealer.setHand(new Hand(dealerCards));
+
+        game.setDealerId(player.getId());
+        game.setPlayerId(dealer.getId());
+
+
 
         return gameRepository.save(game);
     }
 
-    private List<Card> createShuffledDeck() {
-        List<Card> deck = new ArrayList<>();
-        for (Suits suit : Suits.values()) {
-            for (Ranks rank : Ranks.values()) {
-                deck.add(new Card(rank, suit));
-            }
-        }
-        Collections.shuffle(deck);
-        return deck;
+    public Mono<Game> getOneGame(String id){
+        return gameRepository.findById(id);
     }
 
-    public Mono<Game> playerHit(String gameId) {
+    public Mono<Game> play(String gameId, PlayRequest playRequest){
         return gameRepository.findById(gameId)
+                .switchIfEmpty(Mono.error(new RuntimeException("Game not found")))
                 .flatMap(game -> {
-                    return gameRepository.save(game);
+                    String move = playRequest.getMoveType().toLowerCase();
+                    return switch (move) {
+                        case "hit" -> moveHandler.hit(game,playRequest);
+                        case "stand" -> moveHandler.stand(game,playRequest);
+                        default -> Mono.error(new RuntimeException("Unknown move type: " + move));
+                    };
                 });
     }
 }

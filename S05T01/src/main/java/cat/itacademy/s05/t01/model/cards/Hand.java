@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-    private final List<Card> cards;
+    private List<Card> cards;
 
     public Hand(){
+    }
+
+    public Hand(List<Card> cards){
         this.cards = new ArrayList<>();
     }
 

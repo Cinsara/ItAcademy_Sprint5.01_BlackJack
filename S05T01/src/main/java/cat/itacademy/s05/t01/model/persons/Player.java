@@ -1,7 +1,11 @@
 package cat.itacademy.s05.t01.model.persons;
 
+import cat.itacademy.s05.t01.model.cards.Card;
 import jakarta.persistence.Table;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "players")
 @Table(name = "players")
