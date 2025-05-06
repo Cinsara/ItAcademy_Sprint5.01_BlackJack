@@ -1,6 +1,7 @@
 package cat.itacademy.s05.t01.services;
 
 import cat.itacademy.s05.t01.dto.PlayRequest;
+import cat.itacademy.s05.t01.dto.StartGameRequest;
 import cat.itacademy.s05.t01.model.cards.Card;
 import cat.itacademy.s05.t01.model.cards.Hand;
 import cat.itacademy.s05.t01.model.game.Game;
@@ -10,9 +11,8 @@ import cat.itacademy.s05.t01.repository.GameRepository;
 import cat.itacademy.s05.t01.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +23,7 @@ public class GameService {
     PlayRequest playRequest;
     MoveHandler moveHandler;
 
-    public Mono<Game> newGame(Game game){
+    public Mono<Game> newGame(StartGameRequest startGameRequest){
         List<Card> deck = moveHandler.shuffleDeck();
 
         Player player = new Player();
@@ -35,12 +35,13 @@ public class GameService {
         player.setHand(new Hand(playerCards));
         dealer.setHand(new Hand(dealerCards));
 
-        game.setDealerId(player.getId());
-        game.setPlayerId(dealer.getId());
+        Game newGame = new Game();
 
+        newGame.setDealerId(player.getId());
+        newGame.setPlayerId(dealer.getId());
+        newGame.setInitialBet(startGameRequest.getInitialBet());
 
-
-        return gameRepository.save(game);
+        return gameRepository.save(newGame);
     }
 
     public Mono<Game> getOneGame(String id){
@@ -57,6 +58,23 @@ public class GameService {
                         case "stand" -> moveHandler.stand(game,playRequest);
                         default -> Mono.error(new RuntimeException("Unknown move type: " + move));
                     };
+                });
+    }
+
+    public Mono<Void> delete(String id){
+        return gameRepository.deleteById(id);
+    }
+
+    public Flux<Player> getRanking(){
+        // 1. Coger lista jugadores. Comparar scores, ordenar por score
+        return playerRepository.findAll();
+    }
+
+    public Mono<Player> changeName(String id, String newName){
+        return playerRepository.findById(id)
+                .flatMap(player -> {
+                    player.setName(newName);
+                    return playerRepository.save(player);
                 });
     }
 }

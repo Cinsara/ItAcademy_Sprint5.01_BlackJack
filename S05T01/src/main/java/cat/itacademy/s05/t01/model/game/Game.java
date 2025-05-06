@@ -17,16 +17,19 @@ public class Game {
     private String dealerId;
     private GameStatus status;
     private List<Card> deck;
+    private int initialBet;
     private String winner;
 
     public Game() {}
 
-    public Game(String id, String playerId, String dealerId, GameStatus status, List<Card> deck, String winner) {
+    public Game(String id, String playerId, String dealerId, GameStatus status, List<Card> deck,
+                int initialBet, String winner) {
         this.id = id;
         this.playerId = playerId;
         this.dealerId = dealerId;
         this.status = status;
         this.deck = deck;
+        this.initialBet = initialBet;
         this.winner = winner;
     }
 
@@ -54,6 +57,10 @@ public class Game {
         return winner;
     }
 
+    public int getInitialBet() {
+        return initialBet;
+    }
+
     public void setStatus(GameStatus status) {
         this.status = status;
     }
@@ -72,6 +79,10 @@ public class Game {
 
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
+    }
+
+    public void setInitialBet(int initialBet) {
+        this.initialBet = initialBet;
     }
 
     public void setWinner(String winner) {
