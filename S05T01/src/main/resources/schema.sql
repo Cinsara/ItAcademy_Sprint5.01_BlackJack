@@ -3,7 +3,7 @@ CREATE TABLE players(
 id VARCHAR(36) PRIMARY KEY,
 name VARCHAR(100) NOT NULL,
 email VARCHAR(100) NOT NULL,
-score float NOT NULL,
+score int NOT NULL,
 connected BOOLEAN NOT NULL,
 );
 

@@ -8,10 +8,8 @@ import cat.itacademy.s05.t01.model.game.Game;
 import cat.itacademy.s05.t01.model.persons.Dealer;
 import cat.itacademy.s05.t01.model.persons.Player;
 import cat.itacademy.s05.t01.repository.GameRepository;
-import cat.itacademy.s05.t01.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.List;
 
@@ -19,8 +17,6 @@ import java.util.List;
 public class GameService {
     @Autowired
     GameRepository gameRepository;
-    PlayerRepository playerRepository;
-    PlayRequest playRequest;
     MoveHandler moveHandler;
 
     public Mono<Game> newGame(StartGameRequest startGameRequest){
@@ -63,18 +59,5 @@ public class GameService {
 
     public Mono<Void> delete(String id){
         return gameRepository.deleteById(id);
-    }
-
-    public Flux<Player> getRanking(){
-        // 1. Coger lista jugadores. Comparar scores, ordenar por score
-        return playerRepository.findAll();
-    }
-
-    public Mono<Player> changeName(String id, String newName){
-        return playerRepository.findById(id)
-                .flatMap(player -> {
-                    player.setName(newName);
-                    return playerRepository.save(player);
-                });
     }
 }

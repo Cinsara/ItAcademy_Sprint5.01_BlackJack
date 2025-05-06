@@ -10,19 +10,19 @@ import java.util.List;
 @Document(collection = "players")
 @Table(name = "players")
 public class Player extends Person {
-    private float score;
+    private int score;
     private boolean connected;
 
     public Player(){
     }
 
-    public Player(String id, String name, String email, float score, boolean connected){
+    public Player(String id, String name, String email, int score, boolean connected){
         super(id, name, email);
         this.score = score;
         this.connected = connected;
     }
 
-    public float getScore() {
+    public int getScore() {
         return score;
     }
 
@@ -30,7 +30,7 @@ public class Player extends Person {
         return connected;
     }
 
-    public void setScore(float score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
