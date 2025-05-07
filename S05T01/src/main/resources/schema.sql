@@ -6,11 +6,3 @@ email VARCHAR(100) NOT NULL,
 score int NOT NULL,
 connected BOOLEAN NOT NULL,
 );
-
-DROP TABLE if exists dealer;
-CREATE TABLE dealer(
-id VARCHAR(36) PRIMARY KEY,
-name VARCHAR(100) NOT NULL,
-email VARCHAR(100) NOT NULL,
-connected BOOLEAN NOT NULL,
-);

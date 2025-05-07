@@ -15,9 +15,14 @@ import java.util.List;
 
 @Service
 public class GameService {
+    private final GameRepository gameRepository;
+    private final MoveHandler moveHandler;
+
     @Autowired
-    GameRepository gameRepository;
-    MoveHandler moveHandler;
+    public GameService(GameRepository gameRepository, MoveHandler moveHandler) {
+        this.gameRepository = gameRepository;
+        this.moveHandler = moveHandler;
+    }
 
     public Mono<Game> newGame(StartGameRequest startGameRequest){
         List<Card> deck = moveHandler.shuffleDeck();

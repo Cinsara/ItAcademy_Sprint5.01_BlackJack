@@ -3,12 +3,17 @@ package cat.itacademy.s05.t01.services;
 import cat.itacademy.s05.t01.model.persons.Player;
 import cat.itacademy.s05.t01.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class PlayerService {
-    @Autowired
-    PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
+
+    public PlayerService(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
+    }
 
     public Flux<Player> getRanking(){
         return playerRepository.findAll()

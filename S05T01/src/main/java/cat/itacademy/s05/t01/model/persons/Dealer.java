@@ -1,10 +1,10 @@
 package cat.itacademy.s05.t01.model.persons;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "dealer")
-@Table(name = "dealer")
+@Entity
 public class Dealer extends Person {
     private boolean connected;
 

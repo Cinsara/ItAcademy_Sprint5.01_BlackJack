@@ -1,6 +1,7 @@
 package cat.itacademy.s05.t01.model.game;
 
 import cat.itacademy.s05.t01.model.cards.Card;
+import cat.itacademy.s05.t01.model.cards.Hand;
 import cat.itacademy.s05.t01.model.persons.Player;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -9,12 +10,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "games")
-@Table(name = "games")
 public class Game {
     @Id
     private String id;
     private String playerId;
     private String dealerId;
+    private Hand dealerHand;
+    private Hand playerHand;
     private GameStatus status;
     private List<Card> deck;
     private int initialBet;
