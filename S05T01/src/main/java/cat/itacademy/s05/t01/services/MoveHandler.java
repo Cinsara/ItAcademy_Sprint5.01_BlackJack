@@ -9,12 +9,14 @@ import cat.itacademy.s05.t01.model.game.GameStatus;
 import cat.itacademy.s05.t01.repository.GameRepository;
 import cat.itacademy.s05.t01.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class MoveHandler {
     @Autowired
     GameRepository gameRepository;

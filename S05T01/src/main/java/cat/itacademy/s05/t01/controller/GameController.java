@@ -11,30 +11,37 @@ import reactor.core.publisher.Mono;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/blackjack")
+@RequestMapping("/game")
 public class GameController {
     @Autowired
     GameService gameService;
 
-    @PostMapping("/game/new")
+    @PostMapping("/new")
     public Mono<Game> startGame(@RequestBody StartGameRequest startGameRequest){
         return gameService.newGame(startGameRequest);
     }
 
-    @GetMapping("/game/{id}")
+    @GetMapping("/{id}")
     public Mono<ResponseEntity<Game>> findOneGame(@PathVariable("id") String id){
         return gameService.getOneGame(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/game/{id}/play")
+    @PostMapping("/{id}/play")
     public Mono<Game> play(@RequestBody PlayRequest playRequest, String id){
         return gameService.play(id,playRequest);
     }
 
-    @DeleteMapping("/game/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public Mono<Void> deleteGame(@PathVariable("id") String id){
         return gameService.delete(id);
+    }
+
+    //TEMPORAL PARA PRUEBAS
+
+    @GetMapping("/test")
+    public Mono<String> test(){
+        return Mono.just("Funciona");
     }
 }

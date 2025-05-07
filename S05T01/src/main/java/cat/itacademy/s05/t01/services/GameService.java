@@ -5,6 +5,7 @@ import cat.itacademy.s05.t01.dto.StartGameRequest;
 import cat.itacademy.s05.t01.model.cards.Card;
 import cat.itacademy.s05.t01.model.cards.Hand;
 import cat.itacademy.s05.t01.model.game.Game;
+import cat.itacademy.s05.t01.model.game.GameStatus;
 import cat.itacademy.s05.t01.model.persons.Dealer;
 import cat.itacademy.s05.t01.model.persons.Player;
 import cat.itacademy.s05.t01.repository.GameRepository;
@@ -41,6 +42,8 @@ public class GameService {
         newGame.setDealerId(player.getId());
         newGame.setPlayerId(dealer.getId());
         newGame.setInitialBet(startGameRequest.getInitialBet());
+        newGame.setStatus(GameStatus.ONGOING);
+        newGame.setDeck(deck);
 
         return gameRepository.save(newGame);
     }

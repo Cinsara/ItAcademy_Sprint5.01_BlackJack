@@ -1,7 +1,7 @@
 package cat.itacademy.s05.t01.model.cards;
 
-import jakarta.persistence.Table;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Document(collection = "cards")
 @Table(name = "cards")

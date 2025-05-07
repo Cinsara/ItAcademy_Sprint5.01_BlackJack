@@ -1,14 +1,8 @@
 package cat.itacademy.s05.t01.model.persons;
 
-import cat.itacademy.s05.t01.model.cards.Card;
 import cat.itacademy.s05.t01.model.cards.Hand;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import org.springframework.data.annotation.Id;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@MappedSuperclass
 public abstract class Person {
     @Id
     private String id;

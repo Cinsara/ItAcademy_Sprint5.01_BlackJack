@@ -1,6 +1,6 @@
 package cat.itacademy.s05.t01.model.persons;
 
-import jakarta.persistence.Table;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Table(name = "players")
 public class Player extends Person {
