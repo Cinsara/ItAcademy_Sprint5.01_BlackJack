@@ -37,11 +37,4 @@ public class GameController {
     public Mono<Void> deleteGame(@PathVariable("id") String id){
         return gameService.delete(id);
     }
-
-    //TEMPORAL PARA PRUEBAS
-
-    @GetMapping("/test")
-    public Mono<String> test(){
-        return Mono.just("Funciona");
-    }
 }

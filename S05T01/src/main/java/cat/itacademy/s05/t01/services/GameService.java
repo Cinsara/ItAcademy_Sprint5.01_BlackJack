@@ -9,43 +9,73 @@ import cat.itacademy.s05.t01.model.game.GameStatus;
 import cat.itacademy.s05.t01.model.persons.Dealer;
 import cat.itacademy.s05.t01.model.persons.Player;
 import cat.itacademy.s05.t01.repository.GameRepository;
+import cat.itacademy.s05.t01.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 @Service
 public class GameService {
     private final GameRepository gameRepository;
     private final MoveHandler moveHandler;
+    private final PlayerRepository playerRepository;
+    private final DealerService dealerService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, MoveHandler moveHandler) {
+    public GameService(GameRepository gameRepository, MoveHandler moveHandler,
+                       PlayerRepository playerRepository, DealerService dealerService) {
         this.gameRepository = gameRepository;
         this.moveHandler = moveHandler;
+        this.playerRepository = playerRepository;
+        this.dealerService = dealerService;
     }
 
-    public Mono<Game> newGame(StartGameRequest startGameRequest){
+  public Mono<Game> newGame(StartGameRequest startGameRequest){
         List<Card> deck = moveHandler.shuffleDeck();
 
-        Player player = new Player();
-        Dealer dealer = new Dealer();
+        Mono<Player> player = savePlayer(startGameRequest);
+        Dealer dealer = dealerService.getDefaultDealer();
 
-        List<Card> playerCards = List.of(deck.removeFirst(), deck.removeFirst());
         List<Card> dealerCards = List.of(deck.removeFirst(), deck.removeFirst());
-
-        player.setHand(new Hand(playerCards));
         dealer.setHand(new Hand(dealerCards));
 
         Game newGame = new Game();
 
-        newGame.setDealerId(player.getId());
-        newGame.setPlayerId(dealer.getId());
+        newGame.setDealerId(dealer.getId());
+        newGame.setPlayerId(String.valueOf(player.retry()));
         newGame.setInitialBet(startGameRequest.getInitialBet());
         newGame.setStatus(GameStatus.ONGOING);
         newGame.setDeck(deck);
 
         return gameRepository.save(newGame);
+    }
+
+    private Mono<Player> savePlayer(StartGameRequest startGameRequest){
+        List<Card> deck = moveHandler.shuffleDeck();
+
+        Player player = new Player();
+        player.setHand(new Hand(List.of(deck.removeFirst(), deck.removeFirst())));
+        player.setName(startGameRequest.getPlayerName());
+
+        return playerRepository.save(player);
+    }
+
+    private Mono<Game> saveGame(StartGameRequest request, Player player, Dealer dealer) {
+        List<Card> deck = moveHandler.shuffleDeck();
+
+        deck.removeFirst(); deck.removeFirst();
+        deck.removeFirst(); deck.removeFirst();
+
+        Game game = new Game();
+        game.setPlayerId(player.getId());
+        game.setDealerId(dealer.getId());
+        game.setInitialBet(request.getInitialBet());
+        game.setStatus(GameStatus.ONGOING);
+        game.setDeck(deck);
+
+        return gameRepository.save(game);
     }
 
     public Mono<Game> getOneGame(String id){

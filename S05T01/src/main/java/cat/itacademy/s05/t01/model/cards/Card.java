@@ -1,10 +1,5 @@
 package cat.itacademy.s05.t01.model.cards;
 
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.relational.core.mapping.Table;
-
-@Document(collection = "cards")
-@Table(name = "cards")
 public class Card {
     private Ranks rank;
     private  Suits suit;
