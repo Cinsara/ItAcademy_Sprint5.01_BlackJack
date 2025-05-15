@@ -1,0 +1,8 @@
+DROP TABLE if exists players;
+CREATE TABLE players (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	name VARCHAR(255) NOT NULL UNIQUE,
+	gamesPlayed INT DEFAULT 0,
+	gamesWon INT DEFAULT 0,
+	balance DECIMAL (10,2) DEFAULT 100.00
+);
