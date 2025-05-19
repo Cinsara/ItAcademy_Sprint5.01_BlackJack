@@ -165,7 +165,7 @@ docker run -p 8080:8080 shycactus/blackjack-app
 
 ## 🛠️ Technologies
 
-- Java 17+
+- Java 21
 - Spring Boot 3+
 - Spring WebFlux
 - MongoDB Reactive Driver
