@@ -134,6 +134,8 @@ docker pull shycactus/blackjack-app:latest
 docker run -p 8080:8080 shycactus/blackjack-app
 ```
 
+---
+
 ## 📁 Project Structure
 
 ```
