@@ -125,6 +125,15 @@ You can run the app inside a Docker container:
 
 ---
 
+## 🐳 Docker Pull/Run
+
+In order to use this project, you need to do these steps:
+
+```bash
+docker pull shycactus/blackjack-app:latest
+docker run -p 8080:8080 shycactus/blackjack-app
+```
+
 ## 📁 Project Structure
 
 ```
